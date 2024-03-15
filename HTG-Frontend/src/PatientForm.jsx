@@ -32,23 +32,33 @@ function PatientForm() {
             default:
                 break;
         }
-    }
+    };
 
     const submitHandler = (e) => {
-        e.preventDefault();
         const patientInfo = {pName, pGender, pAge, isoContagious, isoPalliative, superCog, superAgg, noMixedReligious};
         
         setFetchIP(true);
 
-        fetch('ENDPOINT', {
+        fetch('http://127.0.0.1:5000/patient-info', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(patientInfo)
         }).then(() => {
             console.log("information posted successfully");
             setFetchIP(false);
-        })
-        
+        })  
+    };
+
+    const preventNegatives = (e) => {
+        if(e.code === 'Minus') {
+            e.preventDefault();
+        }
+    };
+    const preventPastedNegatives = (e) => {
+        const val = parseFloat(e.target.value);
+        if (val < 0){
+            e.preventDefault();
+        }
     }
 
     return (
@@ -84,6 +94,9 @@ function PatientForm() {
                 <input 
                     type="number" 
                     id="age" 
+                    onKeyDown={e => preventNegatives(e)}
+                    min='0'
+                    onPaste={e => preventPastedNegatives(e)}
                     value={pAge}
                     onChange = {e => setPAge(e.target.value)}
                     />
