@@ -1,18 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios';
 
 function PatientForm() {
     const [pName, setPName] = useState('');
     const [pGender, setPGender] = useState('select');
     const [pAge, setPAge] = useState(0);
-    const [isoContagious, setIsoContagious] = useState(true);
-    const [isoPalliative, setIsoPalliative] = useState(true);
-    const [superCog, setSuperCog] = useState(true);
-    const [superAgg, setSuperAgg] = useState(true);
-    const [noMixedReligious, setNoMixedReligious] = useState(true);
+    const [isoContagious, setIsoContagious] = useState(false);
+    const [isoPalliative, setIsoPalliative] = useState(false);
+    const [superCog, setSuperCog] = useState(false);
+    const [superAgg, setSuperAgg] = useState(false);
+    const [noMixedReligious, setNoMixedReligious] = useState(false);
     const [fetchIP, setFetchIP] = useState(false);
     
+    // useEffect(() => {
+    //     console.log('isocontagious: ', isoContagious);
+    // }, [isoContagious])
+
     const changeHandler = (e) => {
-        console.log('in change handler, e.name, e.target.value', e.target.name, e.target.value);
         switch(e.target.name) {
             case 'isoCont':
                 setIsoContagious(e.target.value);
@@ -34,19 +38,25 @@ function PatientForm() {
         }
     };
 
-    const submitHandler = (e) => {
-        const patientInfo = {pName, pGender, pAge, isoContagious, isoPalliative, superCog, superAgg, noMixedReligious};
-        
-        setFetchIP(true);
 
-        fetch('http://127.0.0.1:5000/patient-info', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify(patientInfo)
-        }).then(() => {
-            console.log("information posted successfully");
+    const postData = async (patientInfo) => {
+        console.log(patientInfo);
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/patient-info', JSON.stringify(patientInfo), {
+                    headers: { 'Content-Type': 'application/json'},
+                });
             setFetchIP(false);
-        })  
+            return response.data;
+        } catch (error) {
+            console.error("error posting to backend")
+        }
+    }
+
+    const submitHandler = async (e) => {
+        const patientInfo = {pName, pGender, pAge, isoContagious, isoPalliative, superCog, superAgg, noMixedReligious};
+        setFetchIP(true);
+        const data = await postData(patientInfo);
+        console.log("data: ", data);
     };
 
     const preventNegatives = (e) => {
@@ -186,9 +196,6 @@ function PatientForm() {
         </form>
               )}
         </div>
-        
-        
-
     )
 
 
