@@ -12,7 +12,6 @@ function PatientForm() {
     const [fetchIP, setFetchIP] = useState(false);
     
     const changeHandler = (e) => {
-        console.log('in change handler, e.name, e.target.value', e.target.name, e.target.value);
         switch(e.target.name) {
             case 'isoCont':
                 setIsoContagious(e.target.value);
