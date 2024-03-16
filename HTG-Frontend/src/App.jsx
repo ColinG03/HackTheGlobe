@@ -6,8 +6,8 @@ function App() {
   return (
     <>
       <div className="title">
-        <h3>ABC Hospital</h3>
-        <h1>Bed Allocation System</h1>
+        <h3>Cache Money's</h3>
+        <h1>Bed Match Pro</h1>
       </div>
       <div>
       <a href="/patient-info"><button className="addPatientButton">Add Patient</button></a>
