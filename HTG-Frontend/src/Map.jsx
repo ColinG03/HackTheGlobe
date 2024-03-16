@@ -3,49 +3,116 @@ import './styles/Map.css'
 
 
 const Map = ({ pName, pGender, bedNo }) => {
-    const [patientsList, setPatientsList] = useState([]);
+    const [patientsList, setPatientsList] = useState({});
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [selectedBed, setSelectedBed] = useState(null);
     
     useEffect(() => {
+        setPatientsList(() => {
+            let newList = {};
+            for(let i = 1; i<22; i++){
+                newList[i] = {pName: '', pGender: '', status: 'Vacant and Clean'}
+            }
+            console.log(newList);
+            return newList;
+        });
+        
+    }, [])
+
+    useEffect(() => {
+        console.log('patientsList: ', patientsList);
         if (pName && pGender && bedNo){
             const buttons = document.querySelectorAll('button');
-            const bed = buttons[bedNo-1];
+            const bed = buttons[bedNo]; //Selecting all buttons also selects the submit button... so we don't subtract one any more
             bed.style.backgroundColor = 'red';
-            // setPatientsList(patientsList => [...patientsList, {"pName": locationData[0], 'pGender': locationData[1],'bed_no': locationData[2]}]);
+            setPatientsList(patientsList => {
+                return {
+                    ...patientsList,
+                    [bedNo]: {pName, pGender, status: 'Occupied'}
+                };
+            });
         }
 
     }, [pName, pGender, bedNo])
+
+    const handleBedClick = (bedNumber) => {
+        setSelectedBed(bedNumber);
+        setIsPopupVisible(true);
+    };
+
+    const closePopup = () => {
+        setIsPopupVisible(false);
+    };
+
+    const markForCleaning = (bedNumber) => {
+        const buttons = document.querySelectorAll('button');
+        const bed = buttons[bedNumber];
+        bed.style.backgroundColor = 'yellow';
+        setPatientsList(patientsList => {
+            return {
+                ...patientsList, 
+                [bedNumber]: {pName: '', pGender: '', status: 'Needs Cleaning'}
+            }
+        });
+    }
+
+    const endCleaning = (bedNumber) => {
+        const buttons = document.querySelectorAll('button');
+        const bed = buttons[bedNumber];
+        bed.style.backgroundColor = 'white';
+        setPatientsList(patientsList => {
+            return {
+                ...patientsList, 
+                [bedNumber]: {pName: '', pGender: '', status: 'Vacant and Clean'}
+            }
+        });
+    }
 
     
     return (
         <div>
             <div className='container'>
                  <div className="background-image">
-                    <button className='bed-label1'>1</button>
-                    <button className='bed-label2'>2</button>
-                    <button className='bed-label3'>3</button>
-                    <button className='bed-label4'>4</button>
-                    <button className='bed-label5'>5</button>
-                    <button className='bed-label6'>6</button>
-                    <button className='bed-label7'>7</button>
-                    <button className='bed-label8'>8</button>
-                    <button className='bed-label9'>9</button>
-                    <button className='bed-label10'>10</button>
-                    <button className='bed-label11'>11</button>
-                    <button className='bed-label12'>12</button>
-                    <button className='bed-label13'>13</button>
-                    <button className='bed-label14'>14</button>
-                    <button className='bed-label15'>15</button>
-                    <button className='bed-label16'>16</button>
-                    <button className='bed-label17'>17</button>
-                    <button className='bed-label18'>18</button>
-                    <button className='bed-label19'>19</button>
-                    <button className='bed-label20'>20</button>
-                    <button className='bed-label21'>21</button>
+                 {[...Array(21)].map((_, index) => (
+                        <button
+                            key={index}
+                            className={`bed-label${index + 1}`}
+                            onClick={() => handleBedClick(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
                     <button className='legend' id='red'>Occupied</button>
-                    <button className='legend' id='white'>Vacant</button>
+                    <button className='legend' id='white'>Vacant and Clean</button>
                     <button className='legend' id='yellow'>Needs Cleaning</button>
                 </div>
             </div>
+            
+            {isPopupVisible && (
+                <div className="popup">
+                    <div className="popup-content">
+                        <span className="close" onClick={closePopup}>&times;</span>
+                        <h2>Bed {selectedBed}</h2>
+                        {patientsList[selectedBed.toString()]?.pName && <p>Patient Name: {patientsList[selectedBed.toString()]?.pName}</p>}
+                        {patientsList[selectedBed.toString()]?.pGender && <p>Patient Gender: {patientsList[selectedBed.toString()]?.pGender}</p>}
+                        <p>Room Status: {patientsList[selectedBed.toString()]?.status}</p>
+                        
+                        {patientsList[selectedBed]?.status === 'Occupied' && (
+                            <button onClick={() => {
+                                markForCleaning(selectedBed);
+                                closePopup();
+                        }}>Mark Room for Cleaning</button>
+                        )}
+                        {patientsList[selectedBed]?.status === 'Needs Cleaning' && (
+                            <button onClick={() => {
+                            endCleaning(selectedBed);
+                            closePopup();
+                         }}>Mark as Clean</button>
+                        )}
+                    </div>
+                </div>
+            )}
+            
                 <a href="/"><button>Return to Homepage</button></a>   
         </div>
     )
