@@ -23,15 +23,18 @@ def process_patient():
         aggressive = patient_info['superAgg']
         cognitive_issues = patient_info['superCog']
         no_mixed_gender = patient_info['noMixedReligious']
+        if type(no_mixed_gender) == type(""):
+            no_mixed_gender = bool(no_mixed_gender)
 
+        print(no_mixed_gender)
         underage = False
-        if float(age) < 18:
+        if int(age) < 18:
             underage = True
         
         needs_isolation = False
         if palliative or aggressive or contagious:
             needs_isolation = True
-
+        
         # patient should have all traits and derived traits
         newPatient = model.new_patient(age, aggressive, gender, cognitive_issues, palliative, contagious, underage, needs_isolation, no_mixed_gender)
         if type(newPatient) != Patient:
@@ -40,3 +43,78 @@ def process_patient():
         return jsonify({'room': newPatient.room, 'bed': newPatient.bed})
     else:
         return "method is get"
+
+@app.route('/free-bed', methods=['GET', 'POST'])
+def free_bed():
+    if request.method == 'POST':
+        #Hardcoding this because its 2am and its due tomorrow... oops
+        bed_to_free = request.json
+        if bed_to_free <= 6:
+            room = model.rooms['roomA']
+            room.beds[bed_to_free-1].status = BED_STATUS.OPEN
+            print(room.beds[bed_to_free-1].id)
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free == 7:
+            room = model.rooms['roomB']
+            room.beds[0].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free == 8:
+            room = model.rooms['roomC']
+            room.beds[0].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free == 9:
+            room = model.rooms['roomD']
+            room.beds[0].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free <= 15:
+            room = model.rooms['roomE']
+            room.beds[bed_to_free-10].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free <= 17:
+            room = model.rooms['roomF']
+            room.beds[bed_to_free-16].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            print(room.total_capacity, room.num_open_beds)
+            if room.isEmpty():
+                print('isempty')
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free <= 19:
+            room = model.rooms['roomG']
+            room.beds[bed_to_free-18].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free == 20:
+            room = model.rooms['roomH']
+            room.beds[0].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        elif bed_to_free == 21:
+            room = model.rooms['roomI']
+            room.beds[0].status = BED_STATUS.OPEN
+            room.num_open_beds += 1
+            if room.isEmpty():
+                room.only_gender = None
+                room.underage = False
+        return 'Bed status updated successfully'
+    else:
+        return 'Method is get'

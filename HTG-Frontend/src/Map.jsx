@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import './styles/Map.css'
+import axios from 'axios';
 
 
-const Map = ({ pName, pGender, bedNo }) => {
+const Map = ({ pName, pGender, pAge, bedNo }) => {
     const [patientsList, setPatientsList] = useState({});
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [selectedBed, setSelectedBed] = useState(null);
@@ -11,16 +12,14 @@ const Map = ({ pName, pGender, bedNo }) => {
         setPatientsList(() => {
             let newList = {};
             for(let i = 1; i<22; i++){
-                newList[i] = {pName: '', pGender: '', status: 'Vacant and Clean'}
+                newList[i] = {pName: '', pGender: '', pAge: null, status: 'Vacant and Clean'}
             }
-            console.log(newList);
             return newList;
         });
         
     }, [])
 
     useEffect(() => {
-        console.log('patientsList: ', patientsList);
         if (pName && pGender && bedNo){
             const buttons = document.querySelectorAll('button');
             const bed = buttons[bedNo]; //Selecting all buttons also selects the submit button... so we don't subtract one any more
@@ -28,7 +27,7 @@ const Map = ({ pName, pGender, bedNo }) => {
             setPatientsList(patientsList => {
                 return {
                     ...patientsList,
-                    [bedNo]: {pName, pGender, status: 'Occupied'}
+                    [bedNo]: {pName, pGender, pAge, status: 'Occupied'}
                 };
             });
         }
@@ -51,19 +50,32 @@ const Map = ({ pName, pGender, bedNo }) => {
         setPatientsList(patientsList => {
             return {
                 ...patientsList, 
-                [bedNumber]: {pName: '', pGender: '', status: 'Needs Cleaning'}
+                [bedNumber]: {pName: '', pGender: '', pAge: null, status: 'Needs Cleaning'}
             }
         });
     }
 
-    const endCleaning = (bedNumber) => {
+    const postData = async (bedNumber) => {
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/free-bed', JSON.stringify(bedNumber), {
+                    headers: { 'Content-Type': 'application/json'},
+                });
+            return response.data;
+        } catch (error) {
+            console.error("error posting to backend")
+        }
+    }
+
+    const endCleaning = async (bedNumber) => {
         const buttons = document.querySelectorAll('button');
         const bed = buttons[bedNumber];
         bed.style.backgroundColor = 'white';
+        const response = await postData(bedNumber);
+
         setPatientsList(patientsList => {
             return {
                 ...patientsList, 
-                [bedNumber]: {pName: '', pGender: '', status: 'Vacant and Clean'}
+                [bedNumber]: {pName: '', pGender: '', pAge: null, status: 'Vacant and Clean'}
             }
         });
     }
@@ -95,6 +107,7 @@ const Map = ({ pName, pGender, bedNo }) => {
                         <h2>Bed {selectedBed}</h2>
                         {patientsList[selectedBed.toString()]?.pName && <p>Patient Name: {patientsList[selectedBed.toString()]?.pName}</p>}
                         {patientsList[selectedBed.toString()]?.pGender && <p>Patient Gender: {patientsList[selectedBed.toString()]?.pGender}</p>}
+                        {patientsList[selectedBed.toString()]?.pAge && <p>Patient Age: {patientsList[selectedBed.toString()]?.pAge}</p>}
                         <p>Room Status: {patientsList[selectedBed.toString()]?.status}</p>
                         
                         {patientsList[selectedBed]?.status === 'Occupied' && (

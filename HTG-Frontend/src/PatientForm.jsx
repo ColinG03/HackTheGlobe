@@ -13,12 +13,8 @@ function PatientForm() {
     const [superAgg, setSuperAgg] = useState(false);
     const [noMixedReligious, setNoMixedReligious] = useState(false);
     const [fetchIP, setFetchIP] = useState(false);
-    const [showForm, setShowForm] = useState(true);
     const [bedNo, setBedNo] = useState(null);
     
-    useEffect(() => {
-        console.log('showform: ', showForm);
-    }, [showForm])
 
     const changeHandler = (e) => {
         switch(e.target.name) {
@@ -44,6 +40,7 @@ function PatientForm() {
 
 
     const postData = async (patientInfo) => {
+        console.log('patientinfor: ', patientInfo);
         try {
             const response = await axios.post('http://127.0.0.1:5000/patient-info', JSON.stringify(patientInfo), {
                     headers: { 'Content-Type': 'application/json'},
@@ -60,7 +57,6 @@ function PatientForm() {
         setFetchIP(true);
         const data = await postData(patientInfo);
         setBedNo(data.bed);
-        setShowForm(false);
     };
 
     const preventNegatives = (e) => {
@@ -78,14 +74,13 @@ function PatientForm() {
     return (
         <div className='form-map-container'>
            
-            {/* {!showForm && <Map pName={pName} pGender={pGender} bedNo={bedNo}/>} */}
 
             {fetchIP ? (         
                     <p>Loading...</p>
                 ) : (
                     <div className='left'>
                         <form onSubmit={e => submitHandler(e)}>
-                            <label htmlFor="pname"><b>Patient Name:</b>
+                            <label htmlFor="pname"><b>Patient Name:&ensp;</b>
                                 <input
                                     type="text"
                                     id="pname"
@@ -94,7 +89,7 @@ function PatientForm() {
                                 />
                             </label><br /><br />
                         
-                            <label><b>Patient Gender:</b></label><br />
+                            <label><b>Patient Gender:&ensp;</b></label>
                                 <select
                                     id="gender"
                                     value={pGender}
@@ -106,7 +101,7 @@ function PatientForm() {
                                 </select>
                             <br /><br />
                         
-                            <label htmlFor="age"><b>Patient Age:</b>
+                            <label htmlFor="age"><b>Patient Age:&ensp;</b>
                                 <input
                                     type="number"
                                     id="age"
@@ -202,7 +197,7 @@ function PatientForm() {
                     ) 
               }
                 <div className='right'>
-                    <Map pName={pName} pGender={pGender} bedNo={bedNo}/>
+                    <Map pName={pName} pGender={pGender} pAge={pAge} bedNo={bedNo}/>
                 </div>
 
         </div>

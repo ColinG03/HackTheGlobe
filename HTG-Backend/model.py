@@ -65,10 +65,7 @@ class Model:
         return patient
 
 
-
     def assignBed(self, bed, room, gender, no_mixed_gender, underage):
-        roomChoice = ''
-        bedChoice = ''
         bedChoice = bed.id
         bed.status = BED_STATUS.OCCUPIED
         bed.gender = gender
@@ -76,16 +73,16 @@ class Model:
             self.rooms[room].only_gender = gender
         if underage:
             self.rooms[room].underage = True
-        roomChoice = room
         self.rooms[room].num_open_beds -= 1
-        return roomChoice, bedChoice 
+        return room, bedChoice 
 
     
     def allSameGenders(self, room, pGender):
         for bed in self.rooms[room].beds:
-            if bed.gender != pGender:
-                if bed.gender != None:
-                    return False
+            print('bed.gender: ')
+            print(bed.gender)
+            if bed.gender != pGender and bed.gender != None:
+                return False
         return True
 
     def find_room_bed(self, underage, gender, needs_isolation, no_mixed_gender):
@@ -102,7 +99,7 @@ class Model:
                 if no_mixed_gender:
                     #NOT GOING TO PUT NON-MIXED GENDERS IN A BAY BECAUSE THAT WOULD RESTRICT ANYONE ELSE FROM JOINING THE ROOM THAT ISNT SAME GENDER
                     for room in self.doubleRooms:
-                        if self.allSameGenders and (self.rooms[room].underage or self.rooms[room].isEmpty()) and self.rooms[room].num_open_beds > 0:
+                        if self.allSameGenders(room, gender) and (self.rooms[room].underage or self.rooms[room].isEmpty()) and self.rooms[room].num_open_beds > 0:
                             for bed in self.rooms[room].beds:
                                 if bed.status == BED_STATUS.OPEN:
                                     return self.assignBed(bed, room, gender, no_mixed_gender, underage)
@@ -133,10 +130,11 @@ class Model:
             else:
                 if no_mixed_gender:
                     for room in self.doubleRooms:
-                        if self.allSameGenders and self.rooms[room].num_open_beds > 0:
-                            for bed in self.rooms[room].beds:
-                                if bed.status == BED_STATUS.OPEN:
-                                    return self.assignBed(bed, room, gender, no_mixed_gender, underage)
+                        if self.rooms[room].num_open_beds > 0:
+                            if self.allSameGenders(room, gender) and not self.rooms[room].underage:
+                                for bed in self.rooms[room].beds:
+                                    if bed.status == BED_STATUS.OPEN:
+                                        return self.assignBed(bed, room, gender, no_mixed_gender, underage)
                     for room in self.singleRooms:
                         if self.rooms[room].num_open_beds > 0: #single room, so not checking for gender, only if available
                             bed = self.rooms[room].beds[0]
