@@ -1,0 +1,132 @@
+
+
+.background-image {
+    background-image: url('./../assets/floor_plan.png'); /* Add your image path here */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 85%; /* Adjust the height as needed */
+    width: 85%; /* Adjust the width as needed */
+    position: relative;
+    flex: auto;
+}
+
+.container {
+    width: 900px;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-image button {
+    border: solid black;
+    border-radius: 50px;
+    position: absolute;
+}
+
+.bed-label1 {
+    top: 260px;
+    left: 645px;
+}
+.bed-label2 {
+    top: 325px;
+    left: 645px;
+}
+.bed-label3 {
+    top: 390px;
+    left: 645px;
+}
+.bed-label4 {
+    top: 455px;
+    left: 645px;
+}
+.bed-label5 {
+    top: 520px;
+    left: 645px;
+}
+.bed-label6 {
+    top: 585px;
+    left: 645px;
+}
+.bed-label7 {
+    top: 560px;
+    left: 455px;
+}
+.bed-label8 {
+    top: 560px;
+    left: 350px;
+}
+.bed-label9 {
+    top: 560px;
+    left: 245px;
+}
+.bed-label10 {
+    top: 585px;
+    left: 53px;
+}
+.bed-label11 {
+    top: 520px;
+    left: 53px;
+}
+.bed-label12 {
+    top: 455px;
+    left: 53px;
+}
+.bed-label13 {
+    top: 390px;
+    left: 53px;
+}
+.bed-label14 {
+    top: 325px;
+    left: 53px;
+}
+.bed-label15 {
+    top: 260px;
+    left: 53px;
+}
+.bed-label16 {
+    top: 95px;
+    left: 40px;
+}
+.bed-label17 {
+    top: 95px;
+    left: 145px;
+}
+.bed-label18 {
+    top: 95px;
+    left: 250px;
+}
+.bed-label19 {
+    top: 95px;
+    left: 370px;
+}
+.bed-label20 {
+    top: 35px;
+    left: 475px;
+}
+.bed-label21 {
+    top: 35px;
+    left: 575px;
+}
+
+.legend {
+    position: absolute;
+}
+
+#white {
+    top: 300px;
+    left: 325px;
+}
+
+#red {
+    background-color: red;
+    top: 365px;
+    left: 315px;
+}
+
+#yellow {
+    background-color: yellow;
+    top: 430px;
+    left: 295px
+}
