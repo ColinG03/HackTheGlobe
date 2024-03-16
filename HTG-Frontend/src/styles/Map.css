@@ -116,7 +116,7 @@
 
 #white {
     top: 300px;
-    left: 325px;
+    left: 290px;
 }
 
 #red {
@@ -129,4 +129,36 @@
     background-color: yellow;
     top: 430px;
     left: 295px
+}
+
+.popup {
+    position: fixed; /* Fixed position */
+    top: 0; /* Full-screen from the top */
+    left: 0; /* Full-screen from the left */
+    width: 100%; /* Full-screen width */
+    height: 100%; /* Full-screen height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    z-index: 1000; /* Ensures it's on top of other content */
+    display: flex; /* Enables centering of the popup content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* The popup itself */
+.popup-content {
+    background-color: white; /* White background */
+    padding: 20px; /* Some padding */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* A subtle shadow */
+    width: 50%; /* Or whatever width you prefer */
+    max-width: 500px; /* Maximum width */
+    z-index: 1001; /* Ensures it's above the overlay */
+}
+
+/* The 'close' button in the popup */
+.close {
+    float: right; /* Position it to the right */
+    font-size: 1.5rem; /* Make it a bit larger */
+    font-weight: bold; /* Make it bold */
+    cursor: pointer; /* Change cursor to indicate clickable */
 }
