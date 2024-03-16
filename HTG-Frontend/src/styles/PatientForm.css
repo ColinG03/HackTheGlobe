@@ -5,4 +5,11 @@
 
 .left {
     width: 80%;
+    height: 80%;
+    margin: 10px;
+    text-align: left;
+}
+
+.right {
+    margin: 10px;
 }
