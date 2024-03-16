@@ -20,6 +20,7 @@ const Map = ({ pName, pGender, pAge, bedNo }) => {
     }, [])
 
     useEffect(() => {
+        console.log(pName);
         if (pName && pGender && bedNo){
             const buttons = document.querySelectorAll('button');
             const bed = buttons[bedNo]; //Selecting all buttons also selects the submit button... so we don't subtract one any more

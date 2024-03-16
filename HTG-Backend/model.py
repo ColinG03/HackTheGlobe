@@ -87,6 +87,7 @@ class Model:
 
     def find_room_bed(self, underage, gender, needs_isolation, no_mixed_gender):
         if needs_isolation:
+            print('needs isolation')
             for room in self.singleRooms:
                 if self.rooms[room].num_open_beds > 0:
                     bed = self.rooms[room].beds[0]

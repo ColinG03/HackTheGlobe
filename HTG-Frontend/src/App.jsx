@@ -12,9 +12,7 @@ function App() {
       <div>
       <a href="/patient-info"><button className="addPatientButton">Add Patient</button></a>
       </div>
-      <div>
-      <button className="seeMapButton">See Map</button>
-      </div>
+
     </>
   )
 }

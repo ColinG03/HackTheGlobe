@@ -24,9 +24,36 @@ def process_patient():
         cognitive_issues = patient_info['superCog']
         no_mixed_gender = patient_info['noMixedReligious']
         if type(no_mixed_gender) == type(""):
-            no_mixed_gender = bool(no_mixed_gender)
+            if no_mixed_gender == 'false':
+                no_mixed_gender = False
+            else:
+                no_mixed_gender = True
 
-        print(no_mixed_gender)
+        if type(palliative) == type(""):
+            if palliative == 'false':
+                palliative = False
+            else:
+                palliative = True
+
+        if type(aggressive) == type(""):
+            if aggressive == 'false':
+                aggressive = False
+            else:
+                aggressive = True
+
+        if type(contagious) == type(""):
+            if contagious == 'false':
+                contagious = False
+            else:
+                contagious = True
+
+        print('palliative')
+        print(palliative)
+        print('aggressive')
+        print(aggressive)
+        print('contagious')
+        print(contagious)
+
         underage = False
         if int(age) < 18:
             underage = True
@@ -34,6 +61,8 @@ def process_patient():
         needs_isolation = False
         if palliative or aggressive or contagious:
             needs_isolation = True
+        print('needs isolation')
+        print(needs_isolation)
         
         # patient should have all traits and derived traits
         newPatient = model.new_patient(age, aggressive, gender, cognitive_issues, palliative, contagious, underage, needs_isolation, no_mixed_gender)
@@ -52,7 +81,6 @@ def free_bed():
         if bed_to_free <= 6:
             room = model.rooms['roomA']
             room.beds[bed_to_free-1].status = BED_STATUS.OPEN
-            print(room.beds[bed_to_free-1].id)
             room.num_open_beds += 1
             if room.isEmpty():
                 room.only_gender = None
