@@ -13,7 +13,7 @@
 
 .container {
     width: 900px;
-    height: 90vh;
+    height: 800px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,27 +26,27 @@
 }
 
 .bed-label1 {
-    top: 260px;
+    top: 265px;
     left: 645px;
 }
 .bed-label2 {
-    top: 325px;
+    top: 330px;
     left: 645px;
 }
 .bed-label3 {
-    top: 390px;
+    top: 395px;
     left: 645px;
 }
 .bed-label4 {
-    top: 455px;
+    top: 460px;
     left: 645px;
 }
 .bed-label5 {
-    top: 520px;
+    top: 525px;
     left: 645px;
 }
 .bed-label6 {
-    top: 585px;
+    top: 590px;
     left: 645px;
 }
 .bed-label7 {
@@ -62,27 +62,27 @@
     left: 245px;
 }
 .bed-label10 {
-    top: 585px;
+    top: 590px;
     left: 53px;
 }
 .bed-label11 {
-    top: 520px;
+    top: 525px;
     left: 53px;
 }
 .bed-label12 {
-    top: 455px;
+    top: 460px;
     left: 53px;
 }
 .bed-label13 {
-    top: 390px;
+    top: 395px;
     left: 53px;
 }
 .bed-label14 {
-    top: 325px;
+    top: 330px;
     left: 53px;
 }
 .bed-label15 {
-    top: 260px;
+    top: 265px;
     left: 53px;
 }
 .bed-label16 {
@@ -102,11 +102,11 @@
     left: 370px;
 }
 .bed-label20 {
-    top: 35px;
+    top: 45px;
     left: 475px;
 }
 .bed-label21 {
-    top: 35px;
+    top: 45px;
     left: 575px;
 }
 

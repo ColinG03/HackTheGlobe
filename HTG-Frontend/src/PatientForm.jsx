@@ -59,17 +59,17 @@ function PatientForm() {
         setBedNo(data.bed);
     };
 
-    // const preventNegatives = (e) => {
-    //     if(e.code === 'Minus') {
-    //         e.preventDefault();
-    //     }
-    // };
-    // const preventPastedNegatives = (e) => {
-    //     const val = parseFloat(e.target.value);
-    //     if (val < 0){
-    //         e.preventDefault();
-    //     }
-    // }
+    const preventNegatives = (e) => {
+        if(e.code === 'Minus') {
+            e.preventDefault();
+        }
+    };
+    const preventPastedNegatives = (e) => {
+        const val = parseFloat(e.target.value);
+        if (val < 0){
+            e.preventDefault();
+        }
+    }
 
     return (
         <div className='form-map-container'>

@@ -79,15 +79,12 @@ class Model:
     
     def allSameGenders(self, room, pGender):
         for bed in self.rooms[room].beds:
-            print('bed.gender: ')
-            print(bed.gender)
             if bed.gender != pGender and bed.gender != None:
                 return False
         return True
 
     def find_room_bed(self, underage, gender, needs_isolation, no_mixed_gender):
         if needs_isolation:
-            print('needs isolation')
             for room in self.singleRooms:
                 if self.rooms[room].num_open_beds > 0:
                     bed = self.rooms[room].beds[0]
@@ -98,7 +95,7 @@ class Model:
         else:
             if underage:
                 if no_mixed_gender:
-                    #NOT GOING TO PUT NON-MIXED GENDERS IN A BAY BECAUSE THAT WOULD RESTRICT ANYONE ELSE FROM JOINING THE ROOM THAT ISNT SAME GENDER
+                    #NOT GOING TO PUT UNDERAGE IN A BAY BECAUSE THAT WOULD RESTRICT ANYONE ELSE FROM JOINING THE ROOM THAT ISNT SAME UNDERAGE
                     for room in self.doubleRooms:
                         if self.allSameGenders(room, gender) and (self.rooms[room].underage or self.rooms[room].isEmpty()) and self.rooms[room].num_open_beds > 0:
                             for bed in self.rooms[room].beds:
@@ -111,12 +108,6 @@ class Model:
                                 return self.assignBed(bed, room, gender, no_mixed_gender, underage) 
                     return 'No non-mixed gender rooms available, if the patient is comfortable with mixed gender rooms, please resubmit with this updated information'
                 else:
-                    #should underage people be put in bays? and if so, should that restrict adults from being in the same bay?
-                    for room in self.bays:
-                        if self.rooms[room].num_open_beds > 0 and (self.rooms[room].underage or self.rooms[room].isEmpty()):
-                            for bed in self.rooms[room].beds:
-                                if bed.status == BED_STATUS.OPEN:
-                                    return self.assignBed(bed, room, gender, no_mixed_gender, underage)
                     for room in self.doubleRooms:
                         if self.rooms[room].num_open_beds > 0 and (self.rooms[room].underage or self.rooms[room].isEmpty()):
                             for bed in self.rooms[room].beds:
@@ -130,6 +121,7 @@ class Model:
                     return 'No rooms available for underage patients'
             else:
                 if no_mixed_gender:
+                    #NOT GOING TO PUT NON-MIXED GENDERS IN A BAY BECAUSE THAT WOULD RESTRICT ANYONE ELSE FROM JOINING THE ROOM THAT ISNT SAME GENDER
                     for room in self.doubleRooms:
                         if self.rooms[room].num_open_beds > 0:
                             if self.allSameGenders(room, gender) and not self.rooms[room].underage:
@@ -173,6 +165,5 @@ class Patient:
         self.palliative = palliative
         self.underage = underage
         self.needs_isolation = needs_isolation
-        # Add more attributes as needed
         for key, value in kwargs.items():
             setattr(self, key, value)

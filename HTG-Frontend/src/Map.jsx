@@ -12,7 +12,7 @@ const Map = ({ pName, pGender, pAge, bedNo }) => {
         setPatientsList(() => {
             let newList = {};
             for(let i = 1; i<22; i++){
-                newList[i] = {pName: '', pGender: '', pAge: null, status: 'Vacant and Clean'}
+                newList[i] = {pName: null, pGender: null, pAge: null, status: 'Vacant and Clean'}
             }
             return newList;
         });
@@ -33,7 +33,7 @@ const Map = ({ pName, pGender, pAge, bedNo }) => {
             });
         }
 
-    }, [pName, pGender, bedNo])
+    }, [bedNo])
 
     const handleBedClick = (bedNumber) => {
         setSelectedBed(bedNumber);

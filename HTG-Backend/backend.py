@@ -47,13 +47,6 @@ def process_patient():
             else:
                 contagious = True
 
-        print('palliative')
-        print(palliative)
-        print('aggressive')
-        print(aggressive)
-        print('contagious')
-        print(contagious)
-
         underage = False
         if int(age) < 18:
             underage = True
@@ -61,14 +54,12 @@ def process_patient():
         needs_isolation = False
         if palliative or aggressive or contagious:
             needs_isolation = True
-        print('needs isolation')
-        print(needs_isolation)
+
         
         # patient should have all traits and derived traits
         newPatient = model.new_patient(age, aggressive, gender, cognitive_issues, palliative, contagious, underage, needs_isolation, no_mixed_gender)
         if type(newPatient) != Patient:
             return newPatient
-        print(newPatient.room, newPatient.bed, newPatient.age)
         return jsonify({'room': newPatient.room, 'bed': newPatient.bed})
     else:
         return "method is get"
